@@ -1,0 +1,124 @@
+---
+description: GitHub CLI の gh pr create コマンドのチートシート。PR 作成時に参照する。手順・本文テンプレートは git-workflow ルールを参照。
+alwaysApply: false
+---
+
+# gh pr create チートシート
+
+**出典**: [GitHub CLI Manual - gh pr create](https://cli.github.com/manual/gh_pr_create)
+
+エイリアス: `gh pr new`
+
+## 概要
+
+```bash
+gh pr create [flags]
+```
+
+GitHub 上で Pull Request を作成する。成功すると作成された PR の URL が表示される。
+
+- 現在のブランチがリモートに push されていない場合、push 先の選択や fork のオプションがプロンプトされる。`--head` を指定すると fork/push の挙動をスキップできる。
+- `--head` は `<user>:<branch>` 形式で head リポジトリを指定可能（組織は `<user>` に非対応。詳細は [issue #10093](https://github.com/cli/cli/issues/10093)）。
+- タイトルと本文はプロンプトで入力できる。`--title` と `--body` でプロンプトをスキップ、`--fill` でコミット情報から自動入力。`--fill` と同時に `--title`/`--body` を指定した場合、後者が優先される。
+- ベースブランチは `--base` で指定。未指定時は `git config branch.{current}.gh-merge-base` またはリポジトリのデフォルトブランチ。`git config branch.{current}.gh-merge-base {base}` で現在ブランチのマージベースを設定できる。
+- 本文に `Fixes #123` や `Closes #123` を書くと、PR マージ時に該当 Issue が自動クローズされる。
+- デフォルトではベースリポジトリに書き込み権限があるユーザーが head ブランチに push できる。`--no-maintainer-edit` で無効化。
+- プロジェクトへの追加には `project` スコープが必要。`gh auth refresh -s project` で認可する。
+
+## 主なオプション
+
+| オプション | 説明 |
+| ---------- | ---- |
+| `-a`, `--assignee <login>` | 担当者をログイン名で指定。`@me` で自分をアサイン。 |
+| `-B`, `--base <branch>` | マージ先ブランチ。 |
+| `-b`, `--body <string>` | PR の本文。 |
+| `-F`, `--body-file <file>` | 本文をファイルから読み込む（`-` で標準入力）。 |
+| `-d`, `--draft` | 下書き PR として作成。 |
+| `--dry-run` | 実際には作成せず内容を表示。git の push は行う場合あり。 |
+| `-e`, `--editor` | プロンプトをスキップし、エディタでタイトル・本文を編集（1行目がタイトル、以降が本文）。 |
+| `-f`, `--fill` | コミット情報でタイトル・本文を自動入力。 |
+| `--fill-first` | 最初のコミットの情報を使用。 |
+| `--fill-verbose` | コミットの msg+body を説明に使用。 |
+| `-H`, `--head <branch>` | PR の head ブランチ（デフォルトは現在のブランチ）。 |
+| `-l`, `--label <name>` | ラベルを名前で追加。 |
+| `-m`, `--milestone <name>` | マイルストーンを名前で追加。 |
+| `--no-maintainer-edit` | メンテナが PR の head ブランチを編集することを禁止。 |
+| `-p`, `--project <title>` | タイトルでプロジェクトを指定して PR を追加。 |
+| `--recover <string>` | 失敗した create の入力を復元。 |
+| `-r`, `--reviewer <handle>` | レビュワーまたはチームをハンドルで指定。 |
+| `-T`, `--template <file>` | 本文のひな形に使うテンプレートファイル。 |
+| `-t`, `--title <string>` | PR のタイトル。 |
+| `-w`, `--web` | ブラウザで PR 作成ページを開く。 |
+
+**親コマンドから継承**
+
+| オプション | 説明 |
+| ---------- | ---- |
+| `-R`, `--repo <[HOST/]OWNER/REPO>` | 対象リポジトリを `[HOST/]OWNER/REPO` 形式で指定。 |
+
+## 使用例
+
+```bash
+# タイトルと本文をフラグで指定
+gh pr create --title "The bug is fixed" --body "Everything works again"
+
+# レビュワー・チームを指定
+gh pr create --reviewer monalisa,hubot  --reviewer myorg/team-name
+
+# プロジェクトを指定
+gh pr create --project "Roadmap"
+
+# ベース・head を明示（他ユーザーのブランチを head に）
+gh pr create --base develop --head monalisa:feature
+
+# テンプレートから本文を作成
+gh pr create --template "pull_request_template.md"
+```
+
+### 対話的に作成
+
+```bash
+gh pr create
+# Title / Body をプロンプトで入力
+```
+
+### フラグで作成
+
+```bash
+gh pr create --title "Pull request title" --body "Pull request body"
+```
+
+### ブラウザで作成
+
+```bash
+gh pr create --web
+# PR 作成ページがブラウザで開く
+```
+
+### ワークフローに沿った作成例（HEREDOC）
+
+```bash
+gh pr create --title "feat: Result型によるエラー処理の改善" --body "$(cat <<'EOF'
+## 概要
+
+エラー処理をより型安全にするため、Result型を導入しました。
+
+## 変更内容
+
+- neverthrowを使用したResult型の導入
+- エラーケースの明示的な型定義
+- テストケースの追加
+
+## レビューのポイント
+
+- Result型の使用方法が適切か
+- エラーケースの網羅性
+- テストの十分性
+EOF
+)"
+```
+
+## 補足
+
+- 書き込み権限のないリポジトリでは、fork の自動作成が案内される。
+- オプションの詳細は上記出典 URL を参照。

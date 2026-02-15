@@ -1,0 +1,26 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build and IDE
+dist/
+build/
+.next/
+.terraform/
+*.tfstate
+*.tfstate.*
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and cache
+*.log
+.cache/
