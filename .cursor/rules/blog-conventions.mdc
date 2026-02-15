@@ -1,0 +1,21 @@
+---
+description: pursuit-blog の開発規約。採用技術と開発フローは docs/ に従う。
+alwaysApply: true
+---
+
+# pursuit-blog 開発規約
+
+- **採用技術**: 実装・コード生成時は [docs/tech-stack.md](docs/tech-stack.md) の技術一覧に従う。記載のない技術を導入する場合は docs を更新する。
+- **開発の流れ**: 環境構築・ブランチ・PR・テスト・デプロイは [docs/development-flow.md](docs/development-flow.md) の手順に従う。
+- **コーディングプラクティス**: 実装・リファクタ時は `coding-practices` ルール（FP/DDD/TDD）に従う。
+- **TypeScript**: フロントエンド（Next.js）の TypeScript 実装時は `typescript-practices` ルールに従う。
+- **認証情報**: Access Key やパスワードなどはハードコードせず、環境変数やシークレット管理を利用する。
+- **セキュリティ**: IAM 権限の最小化、ポート開放の制限などセキュリティベストプラクティスを考慮する。
+
+## 絶対的な制約（技術選定に基づく）
+
+- **バックエンド**: Go（`provided.al2023`）で記述し、デプロイには必ず `lambroll` を使用する。Terraform 内で Lambda のコードをビルドしない。
+- **Terraform State**: S3 ネイティブロック（v1.4 以降）のみを使用する。DynamoDB は使用しない。
+- **Lambda とインフラの分離**: Lambda 関数の Terraform 定義には `ignore_changes` を設定し、インフラ（器）とアプリ（中身）のデプロイを分離する。
+- **静的解析**: tflint, trivy, Biome, golangci-lint を使用する。ESLint + Prettier や checkov は採用しない。
+- **フロントエンドのスタイリング**: CSS Modules（Next.js 標準）を使用する。Tailwind CSS は使用しない。
