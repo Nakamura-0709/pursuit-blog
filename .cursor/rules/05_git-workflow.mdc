@@ -62,8 +62,9 @@ alwaysApply: false
    - 機密情報の有無確認
 
 3. **プルリクエストの作成**
+   - 担当者（assignee）は必ず自分にする: `-a @me` を付ける。
    ```bash
-   gh pr create --title "feat: Result型によるエラー処理の改善" --body "$(cat <<'EOF'
+   gh pr create -a @me --title "feat: Result型によるエラー処理の改善" --body "$(cat <<'EOF'
    ## 概要
 
    エラー処理をより型安全にするため、Result型を導入しました。
