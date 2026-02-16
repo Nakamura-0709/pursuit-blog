@@ -9,6 +9,8 @@ alwaysApply: false
 
 エイリアス: `gh pr new`
 
+**このリポジトリでの慣習**: PR 作成時は必ず `-a @me`（または `--assignee @me`）を付け、作成者を担当者にアサインする。
+
 ## 概要
 
 ```bash
@@ -98,7 +100,7 @@ gh pr create --web
 ### ワークフローに沿った作成例（HEREDOC）
 
 ```bash
-gh pr create --title "feat: Result型によるエラー処理の改善" --body "$(cat <<'EOF'
+gh pr create -a @me --title "feat: Result型によるエラー処理の改善" --body "$(cat <<'EOF'
 ## 概要
 
 エラー処理をより型安全にするため、Result型を導入しました。
