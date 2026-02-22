@@ -1,3 +1,4 @@
 {
     "name": "pursuit-blog",
+    "postCreateCommand": "git config --global alias.cleanup \"!git branch --merged | grep -v '\\*' | grep -E -v '^\\s*(main|master|staging|develop)$' | xargs -r git branch -d\""
 }
