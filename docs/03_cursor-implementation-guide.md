@@ -6,9 +6,9 @@
 
 Cursor に正確に実装させる最も確実な方法は、次の **3つを組み合わせるアプローチ** です。
 
-1. **プロジェクトルールの定義**（`.cursor/rules/` の .mdc で「絶対的な掟」を記述）
-2. **`docs/` への仕様書の配置**（採用技術一覧・前提情報を Markdown で保存）
-3. **Composer（Cmd/Ctrl + I）を用いた段階的な実装**（タスクを分割して指示）
+- [x] **プロジェクトルールの定義**（`.cursor/rules/` の .mdc で「絶対的な掟」を記述）
+- [x] **`docs/` への仕様書の配置**（採用技術一覧・前提情報を Markdown で保存）
+- [x] **Composer（Cmd/Ctrl + I）を用いた段階的な実装**（タスクを分割して指示）
 
 ※ ルールの実体は本プロジェクトでは `.cursor/rules/*.mdc` で管理しています。従来の単一ファイル `.cursorrules` はレガシー形式です。
 
@@ -28,10 +28,10 @@ AI（Cursor）は強力ですが、システム全体の複雑な要件を一度
 
 **記述すべき内容の例（本プロジェクトで採用）:**
 
-- バックエンドは Go（`provided.al2023`）で記述し、デプロイには必ず `lambroll` を使用すること
-- Terraform の State 管理は S3 ネイティブロック（v1.4 以降）とし、DynamoDB は絶対に使用しないこと
-- Lambda 関数の Terraform 定義には `ignore_changes` を設定し、インフラとアプリのデプロイを分離すること
-- 静的解析には tflint, trivy, Biome, golangci-lint を使用すること
+- [x] バックエンドは Go（`provided.al2023`）で記述し、デプロイには必ず `lambroll` を使用すること
+- [x] Terraform の State 管理は S3 ネイティブロック（v1.4 以降）とし、DynamoDB は絶対に使用しないこと
+- [x] Lambda 関数の Terraform 定義には `ignore_changes` を設定し、インフラとアプリのデプロイを分離すること
+- [x] 静的解析には tflint, trivy, Biome, golangci-lint を使用すること
 
 ### 2. 仕様書のドキュメント化（コンテキストの提供）
 
