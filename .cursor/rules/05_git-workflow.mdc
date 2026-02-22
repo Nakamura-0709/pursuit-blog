@@ -84,6 +84,25 @@ alwaysApply: false
    )"
    ```
 
+## PR のマージ
+
+1. **マージと作業ブランチの削除**
+   - PR をマージするときは **`gh pr merge -d`**（`--delete-branch`）を使い、マージ完了後にその PR の head ブランチをリモート・ローカル両方から削除する。
+   ```bash
+   # 現在ブランチの PR をマージし、ブランチを削除
+   gh pr merge -d
+
+   # マージ方法を指定する例
+   gh pr merge -d --squash
+   gh pr merge -d --merge
+   gh pr merge -d --rebase
+   ```
+   - 詳細は [07_gh-pr-merge-cheatsheet.mdc](.cursor/rules/07_gh-pr-merge-cheatsheet.mdc) を参照。
+
+2. **ローカルブランチの定期整理**
+   - リモートで削除済みの参照を整理: `git fetch --prune`
+   - マージ済みのローカルブランチを一括削除（main / master / staging / develop は保護）: `git cleanup`（devcontainer の postCreateCommand でエイリアス登録済み）
+
 ## 重要な注意事項
 
 ### コミット関連

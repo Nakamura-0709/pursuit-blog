@@ -1,0 +1,72 @@
+---
+description: GitHub CLI の gh pr merge コマンドのチートシート。PR マージ時に参照する。手順は git-workflow ルールを参照。
+alwaysApply: false
+---
+
+# gh pr merge チートシート
+
+**出典**: [GitHub CLI Manual - gh pr merge](https://cli.github.com/manual/gh_pr_merge)
+
+**このリポジトリでの慣習**: PR をマージするときは `-d`（`--delete-branch`）を付け、マージ完了後にその PR の head ブランチをリモート・ローカル両方から削除する。
+
+## 概要
+
+```bash
+gh pr merge [<number> | <url> | <branch>] [flags]
+```
+
+GitHub 上で Pull Request をマージする。成功するとマージ結果が表示される。
+
+- 引数で PR 番号・URL・ブランチ名を指定できる。未指定の場合は現在のブランチに紐づく PR をマージする。
+- `-d` / `--delete-branch` を付けると、マージ後に head ブランチをリモートおよびローカルから削除する。他環境では `git fetch --prune` で削除済みリモート参照を整理する必要がある場合がある。
+
+## 主なオプション
+
+| オプション | 説明 |
+| ---------- | ---- |
+| `-d`, `--delete-branch` | マージ後に head ブランチをリモート・ローカルから削除する。 |
+| `-m`, `--merge` | マージコミットでマージする（デフォルト）。 |
+| `-s`, `--squash` | 全コミットを 1 つに squash してマージする。 |
+| `-r`, `--rebase` | head のコミットをベースに rebase してマージする。 |
+| `--subject <text>` | マージコミットのタイトルを指定する。 |
+| `--body <text>` | マージコミットの本文を指定する。 |
+| `--body-file <file>` | マージコミットの本文をファイルから読み込む。 |
+| `--admin` | 管理者権限でマージ要件をバイパスする。 |
+| `--auto` | 要件を満たしたら自動でマージする。 |
+
+**親コマンドから継承**
+
+| オプション | 説明 |
+| ---------- | ---- |
+| `-R`, `--repo <[HOST/]OWNER/REPO>` | 対象リポジトリを `[HOST/]OWNER/REPO` 形式で指定する。 |
+
+## 使用例
+
+```bash
+# 現在ブランチの PR をマージし、ブランチを削除（推奨）
+gh pr merge -d
+
+# squash でマージし、ブランチを削除
+gh pr merge -d --squash
+
+# マージ戦略のみ指定（ブランチは残す）
+gh pr merge --squash
+gh pr merge --merge
+gh pr merge --rebase
+
+# PR 番号を指定してマージ
+gh pr merge 123 -d
+
+# マージコミットのメッセージを指定
+gh pr merge -d --squash --subject "feat: Result型の導入" --body "エラー処理を型安全にした"
+```
+
+## マージ後のローカル整理
+
+- `gh pr merge -d` 実行後、他端末や別クローンではリモート追跡参照が残ることがある。`git fetch --prune` で削除済みリモートの参照を整理する。
+- ローカルに残ったマージ済みブランチの一括削除には、`git cleanup` エイリアス（main / master / staging / develop は保護）を使う。devcontainer では postCreateCommand で登録済み。
+
+## 補足
+
+- オプションの詳細は上記出典 URL を参照。
+- マージ手順の全体は [05_git-workflow.mdc](.cursor/rules/05_git-workflow.mdc) の「PR のマージ」を参照。
