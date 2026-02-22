@@ -1,6 +1,6 @@
 # Cursor による実装の進め方
 
-このドキュメントは**Cursor を使った実装の進め方**（ルール・仕様書・段階的実装）をまとめています。日々のブランチ戦略や PR・デプロイの手順は [development-flow.md](development-flow.md) を参照してください。
+このドキュメントは**Cursor を使った実装の進め方**（ルール・仕様書・段階的実装）をまとめています。日々のブランチ戦略や PR・デプロイの手順は [02_development-flow.md](02_development-flow.md) を参照してください。
 
 ## 結論
 
@@ -37,8 +37,8 @@ AI（Cursor）は強力ですが、システム全体の複雑な要件を一度
 
 採用技術一覧や前提情報を、Markdown ファイルとして `docs/` 配下に保存します。
 
-- **例:** [tech-stack.md](tech-stack.md), [architecture.md](architecture.md)（必要に応じて追加）
-- **メリット:** チャットや Composer で `@docs/tech-stack.md` とメンションするだけで、AI が仕様を正確に読み込み、構成のブレを防げます。
+- **例:** [01_tech-stack.md](01_tech-stack.md), [architecture.md](architecture.md)（必要に応じて追加）
+- **メリット:** チャットや Composer で `@docs/01_tech-stack.md` とメンションするだけで、AI が仕様を正確に読み込み、構成のブレを防げます。
 
 ### 3. Composer による「段階的な」実装（タスクの分割）
 
@@ -46,9 +46,9 @@ AI（Cursor）は強力ですが、システム全体の複雑な要件を一度
 
 | フェーズ | 指示例 |
 |----------|--------|
-| **フェーズ1（開発環境）** | 「`@docs/tech-stack.md` を読み込み、devcontainers と mise を使ったローカル開発環境のボイラープレートを作成して」 |
-| **フェーズ2（インフラ基盤）** | 「`@docs/tech-stack.md` をもとに、S3 バックエンドと OIDC 用 IAM ロールを定義する Terraform の初期ディレクトリ構造を作って」 |
-| **フェーズ3（バックエンド）** | 「`@docs/tech-stack.md` をもとに、Go での API Gateway ハンドラーと、デプロイ用の lambroll の設定ファイルを作って」 |
+| **フェーズ1（開発環境）** | 「`@docs/01_tech-stack.md` を読み込み、devcontainers と mise を使ったローカル開発環境のボイラープレートを作成して」 |
+| **フェーズ2（インフラ基盤）** | 「`@docs/01_tech-stack.md` をもとに、S3 バックエンドと OIDC 用 IAM ロールを定義する Terraform の初期ディレクトリ構造を作って」 |
+| **フェーズ3（バックエンド）** | 「`@docs/01_tech-stack.md` をもとに、Go での API Gateway ハンドラーと、デプロイ用の lambroll の設定ファイルを作って」 |
 | **フェーズ4（CI/CD）** | 「これまでのコードをもとに、GitHub Actions のワークフロー（分割版）を構築して」 |
 
 ---
@@ -66,4 +66,4 @@ AI（Cursor）は強力ですが、システム全体の複雑な要件を一度
 - **ルールの具体化**: Cursor に読み込ませるための、より詳細なルール（.mdc の具体例）の追加
 - **インフラ設計**: dev / prod 環境を分離した Terraform の具体的なディレクトリ構成・モジュール分割案の作成
 
-日々の開発手順（ブランチ・PR・デプロイ）は [development-flow.md](development-flow.md)、技術一覧は [tech-stack.md](tech-stack.md) を参照してください。フェーズ別の作業手順・ブランチ名・コミット例の詳細は [implementation-phases.md](implementation-phases.md) を参照し、実装は上記のフェーズ順で段階的に進めてください。
+日々の開発手順（ブランチ・PR・デプロイ）は [02_development-flow.md](02_development-flow.md)、技術一覧は [01_tech-stack.md](01_tech-stack.md) を参照してください。フェーズ別の作業手順・ブランチ名・コミット例の詳細は [04_implementation-phases.md](04_implementation-phases.md) を参照し、実装は上記のフェーズ順で段階的に進めてください。

@@ -5,8 +5,8 @@ alwaysApply: true
 
 # pursuit-blog 開発規約
 
-- **採用技術**: 実装・コード生成時は [docs/tech-stack.md](docs/tech-stack.md) の技術一覧に従う。記載のない技術を導入する場合は docs を更新する。
-- **開発の流れ**: 環境構築・ブランチ・PR・テスト・デプロイは [docs/development-flow.md](docs/development-flow.md) の手順に従う。
+- **採用技術**: 実装・コード生成時は [docs/01_tech-stack.md](docs/01_tech-stack.md) の技術一覧に従う。記載のない技術を導入する場合は docs を更新する。
+- **開発の流れ**: 環境構築・ブランチ・PR・テスト・デプロイは [docs/02_development-flow.md](docs/02_development-flow.md) の手順に従う。
 - **コーディングプラクティス**: 実装・リファクタ時は `coding-practices` ルール（FP/DDD/TDD）に従う。
 - **TypeScript**: フロントエンド（Next.js）の TypeScript 実装時は `typescript-practices` ルールに従う。
 - **認証情報**: Access Key やパスワードなどはハードコードせず、環境変数やシークレット管理を利用する。
