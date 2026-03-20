@@ -1,17 +1,17 @@
 # 実装フェーズと開発・コミットの詳細プラン
 
-[docs/01_tech-stack.md](01_tech-stack.md) と [03_cursor-implementation-guide.md](03_cursor-implementation-guide.md) に基づき、Phase 0〜5 で開発を進めます。各フェーズごとに `feature/xxx` ブランチを作成し、完了時に PR で main にマージします。Phase 5 ではタグ（`v*`）による本番リリースを行います。
+[docs/01_tech-stack.md](01_tech-stack.md) に基づき、Phase 0〜5 で開発を進めます。各フェーズごとに `feature/xxx` ブランチを作成し、完了時に PR で main にマージします。Phase 5 ではタグ（`v*`）による本番リリースを行います。
 
 ---
 
 ## Phase 0: プロジェクトの土台作り（初期セットアップ）
 
-Cursor（AI）のブレを防ぎ、誰でも同じ環境で開発できるようにします。
+誰でも同じ環境で開発できるようにします。
 
 - **ブランチ:** `main`（初回のみ直接コミット）
 - **作業手順とコミット:**
-  - [x] Cursor への指示書と仕様書の作成（プロジェクトルール `.cursor/rules/` と [01_tech-stack.md](01_tech-stack.md) 等）。→ `docs: add cursor rules and architecture specifications`
-  - [ ] 開発環境のコンテナ化とツール群のバージョン固定（`.devcontainer/` と `mise.toml`）。→ `chore: setup devcontainers and mise for local environment`
+  - [x] 仕様書の作成（CLAUDE.md と [01_tech-stack.md](01_tech-stack.md) 等）。→ `docs: add project rules and architecture specifications`
+  - [ ] ツール群のバージョン固定（`mise.toml`）。→ `chore: setup mise for local environment`
   - [ ] 依存関係の自動更新ルールの追加（`.github/dependabot.yml`）。→ `chore: configure dependabot for automated updates`
 - **Push とデプロイ:** `git push origin main`。インフラはまだないのでデプロイは走りません。
 
