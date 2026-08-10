@@ -57,8 +57,13 @@ jobs:
 
       - name: Build
         working-directory: web
+        # npm ci ではなく npm install を使う理由:
+        # package-lock.json は macOS で生成されており lightningcss と
+        # @tailwindcss/oxide の darwin-arm64 版しか記録されていない。
+        # npm ci は lock にないパッケージを取得しないため Linux で
+        # ネイティブバイナリが見つからずビルドが失敗する。
         run: |
-          npm ci
+          npm install --include=optional
           npm run build
 
       - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3

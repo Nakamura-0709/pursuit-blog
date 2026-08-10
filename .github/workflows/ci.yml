@@ -42,7 +42,13 @@ jobs:
         with:
           working_directory: web
 
-      - run: npm ci
+      # npm ci ではなく npm install を使う理由:
+      # package-lock.json は macOS で生成されており lightningcss と
+      # @tailwindcss/oxide の darwin-arm64 版しか記録されていない。
+      # npm ci は lock にないパッケージを取得しないため Linux で
+      # ネイティブバイナリが見つからずビルドが失敗する。
+      # バージョンは lock に従うので再現性は保たれる。
+      - run: npm install --include=optional
 
       # npm run lint を入れていない理由: Biome v2 移行で既存コードに39件の
       # エラーが出ており、解消するまで常に赤くなるため（#16）
