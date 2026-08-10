@@ -11,6 +11,9 @@ vendor/
 dist/
 build/
 .next/
+out/
+next-env.d.ts
+*.tsbuildinfo
 .terraform/
 *.tfstate
 *.tfstate.*
@@ -33,3 +36,7 @@ Thumbs.db
 
 # Lambda build artifacts
 api/*/dist/
+
+# Web build artifacts
+# npm run build の前段で generate-latest-articles.js が生成する
+web/public/latest-articles.json

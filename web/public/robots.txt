@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pursuit-blog.com/sitemap.xml
+
+# クロール頻度の制御
+Crawl-delay: 1
+
+# 特定のパスの制御
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# 検索エンジン向けの情報
+# このサイトは技術ブログ・ポートフォリオサイトです
+# すべてのコンテンツのクロールを許可しています
