@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/ui/footer";
@@ -29,15 +29,22 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+	// OGPやcanonicalの相対パスを絶対URLに解決するために必要
+	metadataBase: new URL("https://pursuit-blog.com"),
 	title: {
 		default: "Pursuit - Portfolio & Blog",
 		template: "%s | Pursuit",
 	},
 	description:
 		"Welcome to Pursuit. Explore my journey and experience in web development.",
-
-	viewport: "width=device-width, initial-scale=1",
 	robots: "index, follow",
+};
+
+// Next.js 14以降、viewportはmetadataから分離して定義する
+// https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
 };
 
 export default function RootLayout({

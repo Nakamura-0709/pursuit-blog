@@ -1,39 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	// 開発時は静的エクスポートを無効、本番ビルド時のみ有効
-	output: process.env.NODE_ENV === "production" ? "export" : undefined,
+	// S3 + CloudFront で配信するため静的エクスポートする
+	output: "export",
+
+	// next/image の最適化はサーバーを必要とするため static export では動かない
+	// formats / deviceSizes / imageSizes / minimumCacheTTL / loader を指定しても無視される
 	images: {
-		unoptimized: false,
-		formats: ["image/webp", "image/avif"],
-		deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-		minimumCacheTTL: 60,
-		// CloudFrontでの画像配信を最適化
-		domains: ["d1ntrwr4hdd7i1.cloudfront.net"],
-		path: "/_next/image",
-		loader: "default",
+		unoptimized: true,
 	},
-	// 静的サイトでのルーティング改善
+
+	// 拡張子なしのパス（例: /about）は CloudFront Function で .html に書き換える
 	trailingSlash: false,
-	// 静的サイト生成時の設定（本番ビルド時のみ）
-	distDir: process.env.NODE_ENV === "production" ? "out" : ".next",
-	// カスタムヘッダーの設定（本番ビルド時のみ）
-	...(process.env.NODE_ENV === "production" && {
-		async headers() {
-			return [
-				{
-					source: "/(.*)",
-					headers: [
-						{
-							key: "Cache-Control",
-							value: "public, max-age=3600, s-maxage=86400",
-						},
-					],
-				},
-			];
-		},
-	}),
 };
 
 export default nextConfig;
