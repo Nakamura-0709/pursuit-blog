@@ -30,8 +30,14 @@ npm run format
 1. `content/` に記事の Markdown を追加する
 2. `public/images/articles/{portfolio,life}/thumbnails/` にサムネイルを置く
 3. `npm run build` でビルドが通ることを確認する
-4. PR を作成してマージする
-5. `out/` を S3 へ同期し、CloudFront のキャッシュを削除する
+4. PR を作成する（`ci.yml` がビルドを検証する）
+5. main へマージする → **`deploy.yml` が自動でデプロイする**
+
+デプロイは GitHub Actions が OIDC で AWS に認証し、`out/` を S3 へ同期して CloudFront のキャッシュを削除する。手動で `aws` コマンドを叩く必要はない。
+
+### 手動でデプロイする場合
+
+CI が使えないときの手順。
 
 ```bash
 export AWS_PROFILE=private-aws
