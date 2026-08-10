@@ -55,15 +55,18 @@ jobs:
         with:
           working_directory: web
 
+      # package-lock.json は macOS で生成されており、optionalDependencies の
+      # 宣言には Linux 版があるが packages の個別エントリが darwin のみになっている。
+      # npm は packages に無いものを取得しないため、Linux 用のネイティブバイナリを
+      # lock からバージョンを読んで明示的に入れる（lightningcss / @tailwindcss/oxide）
       - name: Build
         working-directory: web
-        # npm ci ではなく npm install を使う理由:
-        # package-lock.json は macOS で生成されており lightningcss と
-        # @tailwindcss/oxide の darwin-arm64 版しか記録されていない。
-        # npm ci は lock にないパッケージを取得しないため Linux で
-        # ネイティブバイナリが見つからずビルドが失敗する。
         run: |
+          set -eo pipefail
           npm install --include=optional
+          LCSS=$(jq -r '.packages["node_modules/lightningcss"].optionalDependencies["lightningcss-linux-x64-gnu"]' package-lock.json)
+          OXIDE=$(jq -r '.packages["node_modules/@tailwindcss/oxide"].optionalDependencies["@tailwindcss/oxide-linux-x64-gnu"]' package-lock.json)
+          npm install --no-save "lightningcss-linux-x64-gnu@${LCSS}" "@tailwindcss/oxide-linux-x64-gnu@${OXIDE}"
           npm run build
 
       - uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6.2.3

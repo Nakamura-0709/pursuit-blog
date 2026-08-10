@@ -43,12 +43,20 @@ jobs:
           working_directory: web
 
       # npm ci ではなく npm install を使う理由:
-      # package-lock.json は macOS で生成されており lightningcss と
-      # @tailwindcss/oxide の darwin-arm64 版しか記録されていない。
-      # npm ci は lock にないパッケージを取得しないため Linux で
-      # ネイティブバイナリが見つからずビルドが失敗する。
-      # バージョンは lock に従うので再現性は保たれる。
+      # package-lock.json は macOS で生成されており、optionalDependencies の
+      # 宣言には Linux 版があるが packages の個別エントリが darwin のみになっている。
+      # npm は packages に無いものを取得しないため、Linux でネイティブバイナリが
+      # 見つからずビルドが失敗する（lightningcss / @tailwindcss/oxide）。
       - run: npm install --include=optional
+
+      # 上記の対策。lock の optionalDependencies からバージョンを読んで明示的に入れる。
+      # バージョンをハードコードしないのは、依存更新時に追従漏れが起きるため。
+      - name: Install Linux native binaries
+        run: |
+          set -eo pipefail
+          LCSS=$(jq -r '.packages["node_modules/lightningcss"].optionalDependencies["lightningcss-linux-x64-gnu"]' package-lock.json)
+          OXIDE=$(jq -r '.packages["node_modules/@tailwindcss/oxide"].optionalDependencies["@tailwindcss/oxide-linux-x64-gnu"]' package-lock.json)
+          npm install --no-save "lightningcss-linux-x64-gnu@${LCSS}" "@tailwindcss/oxide-linux-x64-gnu@${OXIDE}"
 
       # npm run lint を入れていない理由: Biome v2 移行で既存コードに39件の
       # エラーが出ており、解消するまで常に赤くなるため（#16）
