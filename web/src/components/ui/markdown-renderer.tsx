@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { CodeBlock } from "./code-block";
-import Mermaid from "../../../components/Mermaid";
+import Mermaid from "./mermaid";
 import { cn } from "@/lib/utils";
 import { memo } from "react";
 

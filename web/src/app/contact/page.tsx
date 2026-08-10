@@ -49,22 +49,15 @@ export default function Contact() {
 		setErrorMessage("");
 
 		try {
-			// 開発用のダミーreCAPTCHAトークン（本番では実際のトークンを使用）
-			const recaptchaToken = "test-token";
-
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/contact`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						...formData,
-						recaptchaToken,
-					}),
+			// CloudFront が /api/contact を API Gateway に流すため同一オリジン
+			// 環境変数でホストを差し込む必要がない
+			const response = await fetch("/api/contact", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
 				},
-			);
+				body: JSON.stringify(formData),
+			});
 
 			const result = await response.json();
 
