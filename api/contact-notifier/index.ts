@@ -278,7 +278,8 @@ https://pursuit-blog.com
 		};
 
 		await sesClient.send(new SendEmailCommand(emailParams));
-		console.log("Auto-reply email sent successfully to:", contactData.email);
+		// 宛先メールアドレスはログに出さない（個人情報のため）
+		console.log("Auto-reply email sent successfully:", contactData.id);
 	} catch (error) {
 		console.error("Error sending auto-reply email:", error);
 		throw error;
@@ -286,10 +287,10 @@ https://pursuit-blog.com
 }
 
 export const handler: DynamoDBStreamHandler = async (event) => {
-	console.log(
-		"Processing DynamoDB Stream event:",
-		JSON.stringify(event, null, 2),
-	);
+	// イベント全体はNewImageに氏名・メール・本文を含むためログに出さない
+	console.log("Processing DynamoDB Stream event:", {
+		recordCount: event.Records.length,
+	});
 
 	for (const record of event.Records) {
 		try {
@@ -315,7 +316,11 @@ export const handler: DynamoDBStreamHandler = async (event) => {
 				updatedAt: record.dynamodb.NewImage.updatedAt.S ?? "",
 			};
 
-			console.log("Processing contact data:", contactData);
+			// 氏名・メール・本文はログに出さない（個人情報のため）
+			console.log("Processing contact data:", {
+				id: contactData.id,
+				messageLength: contactData.message.length,
+			});
 
 			// 並行してメールとDiscord通知を送信
 			const promises = [
