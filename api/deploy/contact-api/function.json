@@ -1,0 +1,26 @@
+{
+  "FunctionName": "{{ ssm `/pb/prod/contact_api/function_name` }}",
+  "Role": "{{ ssm `/pb/prod/contact_api/role_arn` }}",
+  "Runtime": "nodejs22.x",
+  "Handler": "index.handler",
+  "Architectures": [
+    "x86_64"
+  ],
+  "MemorySize": 256,
+  "Timeout": 30,
+  "Environment": {
+    "Variables": {
+      "CONTACTS_TABLE_NAME": "{{ ssm `/pb/prod/contacts/table_name` }}"
+    }
+  },
+  "LoggingConfig": {
+    "LogFormat": "JSON",
+    "ApplicationLogLevel": "INFO",
+    "SystemLogLevel": "WARN"
+  },
+  "Tags": {
+    "Service": "pursuit-blog",
+    "ManagedBy": "terraform",
+    "Repo": "private-aws"
+  }
+}

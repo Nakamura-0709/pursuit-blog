@@ -1,0 +1,8 @@
+# lambrollとNode.jsのバージョン固定
+# private-awsのmise.tomlとは別管理（デプロイ対象が異なるため）
+#
+# lambrollを短縮名で書けない理由: miseのツールレジストリに登録されておらず、
+# aquaバックエンドを明示する必要があるため
+[tools]
+node                    = "22"
+"aqua:fujiwara/lambroll" = "1.5.1"
