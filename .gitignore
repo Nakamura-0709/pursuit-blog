@@ -30,3 +30,6 @@ Thumbs.db
 # Logs and cache
 *.log
 .cache/
+
+# Lambda build artifacts
+api/*/dist/
