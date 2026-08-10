@@ -1,26 +1,19 @@
 {
-	"name": "api-handler-lambda",
+	"name": "contact-api",
 	"version": "1.0.0",
-	"description": "API handler Lambda function for contact creation",
+	"description": "問い合わせAPI（API Gateway経由の同期処理）",
 	"main": "index.js",
 	"scripts": {
-		"build": "tsc && cp package.json dist/ && cd dist && npm install --production",
-		"package": "npm run build && cd dist && zip -r ../api-handler-lambda.zip .",
-		"dev": "ts-node src/index.ts",
-		"test": "jest"
-	},
-	"dependencies": {
-		"@aws-sdk/client-dynamodb": "^3.902.0",
-		"@aws-sdk/lib-dynamodb": "^3.902.0",
-		"aws-lambda": "^1.0.7"
+		"build": "tsc"
 	},
 	"devDependencies": {
+		"@aws-sdk/client-dynamodb": "^3.902.0",
+		"@aws-sdk/lib-dynamodb": "^3.902.0",
 		"@types/aws-lambda": "^8.10.155",
 		"@types/node": "^24.7.0",
-		"ts-node": "^10.9.0",
 		"typescript": "^5.9.3"
 	},
 	"engines": {
-		"node": ">=20.0.0"
+		"node": ">=22.0.0"
 	}
 }
