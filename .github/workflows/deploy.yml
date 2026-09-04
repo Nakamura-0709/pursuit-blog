@@ -134,3 +134,31 @@ jobs:
           lambroll deploy \
             --function "deploy/${{ matrix.function }}/function.json" \
             --src "${{ matrix.function }}/dist"
+
+  # 各ジョブに if: failure() のステップを足さない理由: web と api（matrix 2件）で
+  # 3箇所に同じ処理が重複する。needs でまとめれば1箇所で済む
+  #
+  # webhook を AWS Secrets Manager から取らない理由: デプロイ失敗の原因が AWS 認証
+  # だった場合、通知自体も失敗する。GitHub Secrets なら AWS の状態に依存しない
+  notify:
+    needs: [changes, web, api]
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Notify Discord
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -eo pipefail
+          jq -n \
+            --arg url "$RUN_URL" \
+            --arg sha "${GITHUB_SHA:0:7}" \
+            --arg message "$COMMIT_MESSAGE" \
+            '{content: ("**デプロイが失敗しました**\n記事は公開されていません。\n\n`" + $sha + "` " + $message + "\n" + $url)}' \
+            | curl -sS --fail-with-body -X POST "$WEBHOOK_URL" \
+                -H "Content-Type: application/json" -d @-
